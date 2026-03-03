@@ -110,13 +110,9 @@ console.log("\n🚀 Starting build process...\n");
 const cliConfig = parseArgs();
 const outdir = cliConfig.outdir || path.join(process.cwd(), "dist");
 
-// Preserve static assets (e.g. feishu.png) across builds
-let preservedFeishu: Buffer | null = null;
-const feishuPath = path.join(outdir, "feishu.png");
-if (existsSync(feishuPath)) {
-  const { readFileSync } = await import("fs");
-  preservedFeishu = readFileSync(feishuPath);
-}
+// Static asset: copy from root to dist after build
+const rootFeishu = path.join(process.cwd(), "feishu.png");
+const distFeishu = path.join(outdir, "feishu.png");
 
 if (existsSync(outdir)) {
   console.log(`🗑️ Cleaning previous build at ${outdir}`);
@@ -153,13 +149,11 @@ const outputTable = result.outputs.map(output => ({
 
 console.table(outputTable);
 
-// Restore preserved static assets
-if (preservedFeishu) {
-  const { writeFileSync } = await import("fs");
-  const { mkdirSync } = await import("fs");
-  if (!existsSync(outdir)) mkdirSync(outdir, { recursive: true });
-  writeFileSync(feishuPath, preservedFeishu);
-  console.log("📎 Restored dist/feishu.png");
+// Copy feishu.png from root to dist
+const { copyFileSync } = await import("fs");
+if (existsSync(rootFeishu)) {
+  copyFileSync(rootFeishu, distFeishu);
+  console.log("📎 Copied feishu.png to dist/");
 }
 
 const buildTime = (end - start).toFixed(2);

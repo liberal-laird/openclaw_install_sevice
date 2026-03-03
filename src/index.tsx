@@ -2,13 +2,13 @@ import { serve } from "bun";
 import path from "path";
 import index from "./index.html";
 
-const distFeishu = path.join(import.meta.dir, "..", "dist", "feishu.png");
+const rootFeishu = path.join(import.meta.dir, "..", "feishu.png");
 
 const server = serve({
   routes: {
     // Static asset: contact QR/image
     "/feishu.png": async () => {
-      const file = Bun.file(distFeishu);
+      const file = Bun.file(rootFeishu);
       if (await file.exists()) {
         return new Response(file, {
           headers: { "Content-Type": "image/png" },
