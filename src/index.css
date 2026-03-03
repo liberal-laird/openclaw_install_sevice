@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-warm-bg: #faf8f5;
+    --color-warm-block: #f5f0e8;
+    --color-warm-primary: #c17f59;
+    --color-warm-primary-dark: #a66b48;
+    --color-warm-accent: #b8860b;
+    --color-warm-text: #2c2419;
+    --color-warm-text-muted: #5c5349;
+    --color-warm-border: #e8e2d9;
+  }
+
+  body {
+    @apply min-w-[320px] min-h-screen m-0 font-sans antialiased;
+    background-color: var(--color-warm-bg);
+    color: var(--color-warm-text);
+  }
+}
+
+@media (prefers-reduced-motion) {
+  *,
+  ::before,
+  ::after {
+    animation: none !important;
+  }
+}
